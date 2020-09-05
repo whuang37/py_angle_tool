@@ -1,19 +1,22 @@
 import tkinter as tk
 import math
 from PIL import Image, ImageTk
-from time import sleep
+from tkinter import filedialog
 class Application:
     def __init__(self, master):
+        
+        self.file_name = tk.StringVar(value = filedialog.askopenfilename())
         self.master = master
         self.master.title("Angle Tool")
         self.canvas = tk.Canvas(self.master, highlightthickness = 0) 
-        self.canvas.pack(fill = "both", expand = True)
         
         # open an image from the folder to display on the canvas
-        image = ImageTk.PhotoImage(file = "test.jpg")
+        im = Image.open(self.file_name.get())
+        image = ImageTk.PhotoImage(im)
         imageid = self.canvas.create_image(0, 0, anchor = "nw", image = image)
         self.canvas.lower(imageid)
         self.canvas.image = image # saves a copy of the image for garbage colelction
+        self.canvas.pack(fill = "both", expand = True)
         
         dimensions = "{0}x{1}".format(image.width(), image.height())
         self.master.geometry(dimensions)
